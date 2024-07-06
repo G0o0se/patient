@@ -15,7 +15,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        return $this->redirect($adminUrlGenerator->setController(PatientCrudController::class)->generateUrl());
+        return $this->redirect($adminUrlGenerator->setController(UserCrudController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
@@ -26,6 +26,6 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Користувачі', 'fa fa-home');
     }
 }

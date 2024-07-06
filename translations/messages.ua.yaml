@@ -1,0 +1,16 @@
+Welcome: Ласкаво просимо!
+You are logged in as: Ви увійшли як
+Logout: Вийти
+Please sign in: Будь ласка, увійдіть
+Email: Електронна пошта
+Password: Пароль
+Remember me: Запам'ятати мене
+Sign in: Увійти
+Invalid credentials.: Невірні дані для входу
+
+Roles: Ролі
+Admin: Адміністратор
+Patient: Пацієнт
+Doctor: Лікар
+Repeat:
+  password: Повторіть пароль
