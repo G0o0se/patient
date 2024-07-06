@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -37,12 +38,21 @@ class UserCrudController extends AbstractCrudController
             ChoiceField::new('roles')
                 ->setLabel('Roles')
                 ->setChoices([
-                    'Admin' => 'ROLE_ADMIN',
-                    'Patient' => 'ROLE_PATIENT',
-                    'Doctor' => 'ROLE_DOCTOR',
+                    'Admin' => User::ROLE_ADMIN,
+                    'Patient' => User::ROLE_PATIENT,
+                    'Doctor' => User::ROLE_DOCTOR,
                 ])
                 ->allowMultipleChoices(),
         ];
+
+        $avatarPath = ImageField::new('avatarPath')
+            ->setBasePath(User::IMAGE_FOLDER)
+            ->setUploadDir('public'.User::IMAGE_FOLDER)
+            ->setUploadedFileNamePattern('[randomhash].[extension]')
+            ->setRequired(false)
+            ->onlyOnForms();
+
+        $fields[] = $avatarPath;
 
         $password = TextField::new('password')
             ->setFormType(RepeatedType::class)

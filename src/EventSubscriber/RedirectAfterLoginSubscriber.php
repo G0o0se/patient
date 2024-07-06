@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -25,12 +26,12 @@ class RedirectAfterLoginSubscriber implements EventSubscriberInterface
     {
         $user = $event->getAuthenticationToken()->getUser();
 
-        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (in_array(User::ROLE_ADMIN, $user->getRoles())) {
             $this->redirectResponse = new RedirectResponse($this->router->generate('admin'));
-        } elseif (in_array('ROLE_PATIENT', $user->getRoles())) {
-            $this->redirectResponse = new RedirectResponse($this->router->generate('patient_index'));
-        } elseif (in_array('ROLE_DOCTOR', $user->getRoles())) {
-            $this->redirectResponse = new RedirectResponse($this->router->generate('doctor_index'));
+        } elseif (in_array(User::ROLE_PATIENT, $user->getRoles())) {
+            $this->redirectResponse = new RedirectResponse($this->router->generate('patient_information'));
+        } elseif (in_array(User::ROLE_DOCTOR, $user->getRoles())) {
+            $this->redirectResponse = new RedirectResponse($this->router->generate('doctor_patients_list'));
         }
     }
 

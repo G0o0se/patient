@@ -11,6 +11,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
+    public const ROLE_PATIENT = 'ROLE_PATIENT';
+
+    public const ROLE_DOCTOR = 'ROLE_DOCTOR';
+
+    public const IMAGE_FOLDER = '/uploads/avatars/';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,6 +39,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatarPath = null;
+
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
 
     public function getId(): ?int
     {
@@ -102,5 +125,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): static
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getAvatarPath(): ?string
+    {
+        return $this->avatarPath;
+    }
+
+    public function setAvatarPath(?string $avatarPath): static
+    {
+        $this->avatarPath = $avatarPath;
+
+        return $this;
+    }
+
+    public function getFullAvatarPath(): ?string
+    {
+        return $this->avatarPath ? self::IMAGE_FOLDER . $this->avatarPath : null;
     }
 }

@@ -20,6 +20,7 @@ action:
   create_and_add_another: Створити ще
   create: Створити
   cancel: Скасувати
+  choose_file: Вибрати файл
 
 user:
   logged_in_as: Ви увійшли як
