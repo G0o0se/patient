@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Business\User\UserUpdater;
-use App\Entity\User;
 use App\Form\UserForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +30,7 @@ class PatientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $updater->save($form);
 
-            $this->addFlash('success', 'You successfully updated company.');
+            $this->addFlash('success', 'Ви успішно оновили профіль.');
             return $this->redirectToRoute('patient_profile');
         }
 

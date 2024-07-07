@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -21,17 +22,17 @@ class UserForm extends AbstractType
         $uploadAvatar = $options['uploadAvatar'];
 
         $builder
+            ->add('firstName', null, [
+                'label' => 'firstName',
+                'required' => false,
+            ])
+            ->add('lastName', null, [
+                'label' => 'lastName',
+                'required' => false,
+            ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
-            ])
-            ->add('roles', ChoiceType::class, [
-                'label' => 'Roles',
-                'choices' => [
-                    'Admin' => User::ROLE_ADMIN,
-                    'Patient' => User::ROLE_PATIENT,
-                    'Doctor' => User::ROLE_DOCTOR,
-                ],
-                'multiple' => true,
+                'required' => false,
             ]);
 
             if($uploadAvatar) {
@@ -56,8 +57,10 @@ class UserForm extends AbstractType
         $builder
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'required' => false,
                 'first_options' => [
-                    'label' => 'Password',
+                    'label' => 'New password',
+                    'required' => false,
                     'constraints' => [
                         new Assert\Length([
                             'min' => 8,
@@ -70,7 +73,10 @@ class UserForm extends AbstractType
                         ]),
                     ],
                 ],
-                'second_options' => ['label' => 'Repeat.password'],
+                'second_options' => [
+                    'label' => 'Repeat.new.password',
+                    'required' => false,
+                ],
                 'invalid_message' => 'Значення не співпадають',
                 'mapped' => false,
             ]);

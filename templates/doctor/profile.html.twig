@@ -1,6 +1,101 @@
 {% extends 'doctor/base_doctor.html.twig' %}
 
+{% block headline %}{{ title }}{% endblock %}
+
 {% block main_content %}
+    <div class="form-signin mx-auto d-flex justify-content-center">
         {{ form_start(form) }}
+
+        <div class="mb-2 {% if form.firstName.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.firstName) }}
+            {% if form.firstName.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.firstName) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.firstName, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.lastName.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.lastName) }}
+            {% if form.lastName.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.lastName) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.lastName, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.email.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.email) }}
+            {% if form.email.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.email) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.email, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.avatar.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.avatar) }}
+            {% if form.avatar.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.avatar) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.avatar, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.password.first.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.password.first) }}
+            {% if form.password.first.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.password.first) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.password.first, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.password.second.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.password.second) }}
+            {% if form.password.second.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.password.second) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.password.second, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mt-2">
+            <button class="btn btn-lg btn-primary justify-content-center" type="submit">
+                {{ 'Save'|trans }}
+            </button>
+        </div>
+
         {{ form_end(form) }}
+    </div>
 {% endblock %}

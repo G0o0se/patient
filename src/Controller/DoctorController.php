@@ -30,8 +30,8 @@ class DoctorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $updater->save($form);
 
-            $this->addFlash('success', 'You successfully updated company.');
-            return $this->redirectToRoute('patient_profile');
+            $this->addFlash('success', 'Ви успішно оновили профіль.');
+            return $this->redirectToRoute('doctor_profile');
         }
 
         return $this->render('doctor/profile.html.twig', [

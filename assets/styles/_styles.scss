@@ -1,0 +1,23 @@
+.alert{
+  &-custom{
+    padding: 0.5rem 0.5rem 0.5rem 1rem!important;
+    background: red;
+    margin: 0 0 0.5rem 0;
+    ul{
+      margin: 0!important;
+      padding: 0!important;
+      list-style-type: none;
+      li{
+        color: white;
+      }
+    }
+  }
+}
+
+.form{
+  &-error{
+    input, textarea, .choices__inner{
+      border-color: red;
+    }
+  }
+}
