@@ -1,11 +1,9 @@
-{% extends 'doctor/base_doctor.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block headline %}
-    <h3>{{ title }}</h3>
-{% endblock %}
+{% block title %}{{ 'Register'|trans }}!{% endblock %}
 
-{% block main_content %}
-    <div class="form-signin mx-auto d-flex justify-content-center">
+{% block body %}
+    <div class="form-signin m-auto d-flex justify-content-center align-items-center vh-100 bg-body-tertiary">
         {{ form_start(form) }}
 
         <div class="mb-2 {% if form.firstName.vars.errors|length %}form-error{% endif %}">
@@ -50,20 +48,6 @@
             }) }}
         </div>
 
-        <div class="mb-2 {% if form.avatar.vars.errors|length %}form-error{% endif %}">
-            {{ form_label(form.avatar) }}
-            {% if form.avatar.vars.errors|length %}
-                <div class="alert alert-danger alert-custom" role="alert">
-                    {{ form_errors(form.avatar) }}
-                </div>
-            {% endif %}
-            {{ form_widget(form.avatar, {
-                'attr': {
-                    'class': 'form-control'
-                }
-            }) }}
-        </div>
-
         <div class="mb-2 {% if form.password.first.vars.errors|length %}form-error{% endif %}">
             {{ form_label(form.password.first) }}
             {% if form.password.first.vars.errors|length %}
@@ -92,17 +76,29 @@
             }) }}
         </div>
 
-        <div class="mb-2 ">
-            <label for="code">{{ 'Code'|trans }}</label>
-            <input type="text" id="code" class="form-control" disabled value="{{ app.user.code }}">
+        <div class="mb-2 {% if form.agreeTerms.vars.errors|length %}form-error{% endif %}">
+            {% if form.agreeTerms.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.agreeTerms) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.agreeTerms, {
+                'attr': {
+                    'class': 'form-check-input',
+                }
+            }) }}
+            {{ form_label(form.agreeTerms) }}
         </div>
 
-        <div class="mt-2">
-            <button class="btn btn-lg btn-primary justify-content-center" type="submit">
-                {{ 'Save'|trans }}
+        <div class="d-flex justify-content-center my-3">
+            <button class="btn btn-lg btn-primary" type="submit">
+                {{ 'Register'|trans }}
             </button>
         </div>
 
+        <div class="text-center">
+            <p>{{ 'Do you have an account?'|trans }} <a href="{{ path('app_login') }}">{{ 'Log in'|trans }}</a></p>
+        </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}

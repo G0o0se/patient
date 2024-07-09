@@ -4,21 +4,19 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\IsTrue;
 
-class UserForm extends AbstractType
+class RegisterForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $uploadAvatar = $options['uploadAvatar'];
-
         $builder
             ->add('firstName', null, [
                 'label' => 'firstName',
@@ -31,35 +29,26 @@ class UserForm extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'required' => false,
-            ]);
-
-            if($uploadAvatar) {
-                $builder
-                    ->add('avatar', FileType::class, [
-                        'label' => 'Avatar',
-                        'mapped' => false,
-                        'required' => false,
-                        'constraints' => [
-                            new Image([
-                                'maxSize' => '1024k',
-                                'mimeTypes' => [
-                                    'image/jpeg',
-                                    'image/png',
-                                ],
-                                'mimeTypesMessage' => 'Будь ласка, завантажте дійсне зображення у форматі PNG або JPEG',
-                            ])
-                        ],
-                    ]);
-            }
-
-        $builder
+            ])
+            ->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Я погоджуюсь з умовами',
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'Ви повинні погодитися з нашими умовами.',
+                    ]),
+                ],
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => false,
                 'first_options' => [
-                    'label' => 'New password',
-                    'required' => false,
+                    'label' => 'Password',
                     'constraints' => [
+                        new Assert\NotNull([
+                            'message' => 'Будь ласка, заповніть це поле',
+                        ]),
                         new Assert\Length([
                             'min' => 8,
                             'minMessage' => 'Ваш пароль повинен містити щонайменше {{ limit }} символів',
@@ -72,8 +61,12 @@ class UserForm extends AbstractType
                     ],
                 ],
                 'second_options' => [
-                    'label' => 'Repeat.new.password',
-                    'required' => false,
+                    'label' => 'Repeat.password',
+                    'constraints' => [
+                        new Assert\NotNull([
+                            'message' => 'Будь ласка, заповніть це поле',
+                        ]),
+                    ]
                 ],
                 'invalid_message' => 'Значення не співпадають',
                 'mapped' => false,
@@ -84,7 +77,6 @@ class UserForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'uploadAvatar' => false
         ]);
     }
 }

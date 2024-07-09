@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Utils\CodeGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -22,7 +23,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserCrudController extends AbstractCrudController
 {
-    public function __construct(public UserPasswordHasherInterface $userPasswordHasher) {}
+
+    public function __construct(
+        public UserPasswordHasherInterface $userPasswordHasher,
+        public CodeGenerator $codeGenerator
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -47,6 +52,8 @@ class UserCrudController extends AbstractCrudController
                     'Doctor' => User::ROLE_DOCTOR,
                 ])
                 ->allowMultipleChoices(),
+            TextField::new('code')
+                ->setLabel('Code')->setFormTypeOption('disabled', true)
         ];
 
         $avatarPath = ImageField::new('avatarPath')
@@ -84,6 +91,13 @@ class UserCrudController extends AbstractCrudController
         $fields[] = $password;
 
         return $fields;
+    }
+
+    public function createEntity(string $entityFqcn)
+    {
+        $user = new User();
+        $user->setCode($this->codeGenerator->generateCode());
+        return $user;
     }
 
     public function createNewFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface

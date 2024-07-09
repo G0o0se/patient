@@ -21,3 +21,52 @@
     }
   }
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+
+  span {
+    display: inline-block;
+    margin: 0 2px;
+    padding: 0.5em 1em;
+    border: 1px solid #007bff;
+    border-radius: 0.5rem;
+    color: #007bff;
+    text-decoration: none;
+    transition: background-color .3s, color .3s;
+
+    a {
+      text-decoration: none;
+      user-select: none;
+    }
+
+    &:hover {
+      background-color: #007bff;
+      color: #fff;
+
+      a {
+        color: #fff;
+      }
+    }
+  }
+
+  .first, .previous, .next, .last {
+    a {
+      color: #007bff;
+      text-decoration: none;
+
+      &:hover {
+        background-color: #007bff;
+        color: #fff;
+      }
+    }
+  }
+
+  .current {
+    background-color: #007bff;
+    color: #fff;
+  }
+}

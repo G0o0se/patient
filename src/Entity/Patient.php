@@ -13,22 +13,39 @@ class Patient
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    #[ORM\ManyToOne(inversedBy: 'patients')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $patient = null;
+
+    #[ORM\ManyToOne(inversedBy: 'doctors')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $doctor = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getPatient(): ?User
     {
-        return $this->username;
+        return $this->patient;
     }
 
-    public function setUsername(string $username): static
+    public function setPatient(?User $patient): static
     {
-        $this->username = $username;
+        $this->patient = $patient;
+
+        return $this;
+    }
+
+    public function getDoctor(): ?User
+    {
+        return $this->doctor;
+    }
+
+    public function setDoctor(?User $doctor): static
+    {
+        $this->doctor = $doctor;
 
         return $this;
     }

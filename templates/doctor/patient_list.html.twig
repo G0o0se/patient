@@ -1,0 +1,26 @@
+{% extends 'doctor/base_doctor.html.twig' %}
+
+{% block headline %}
+    <h3>{{ title }}</h3>
+    <div class="d-flex justify-content-end">
+        <a href="{{ path('doctor_add_patient') }}" type="button" class="btn btn-primary">{{ 'Add patient'|trans }}</a>
+    </div>
+{% endblock %}
+
+{% block main_content %}
+    <div class="row">
+        {% for patient in pagination %}
+            <div class="col-sm-3">
+                <div class="card">
+                    <a href="{{ path('doctor_patient_info', {'id': patient.id}) }}" class="card-body text-decoration-none">
+                        <h5 class="card-title">{{ patient.patient.fullName }}</h5>
+                        <p class="card-title">{{ patient.patient.code }}</p>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'doctor/base_doctor.html.twig' %}
+
+{% block headline %}<h3>{{ patient.patient.fullName }}</h3>{% endblock %}
+
+{% block main_content %}
+    <div class="row">
+        {{ patient.patient.id }}
+        {{ patient.patient.fullName }}
+        {{ patient.patient.email }}
+        {{ patient.patient.code }}
+    </div>
+{% endblock %}

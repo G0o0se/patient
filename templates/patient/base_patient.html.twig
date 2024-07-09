@@ -30,9 +30,9 @@
             </div>
         </div>
 
-        <div class="justify-content-center w-100">
-            <div class="d-flex m-3">
-                <h3>{% block headline %}{% endblock %}</h3>
+        <div class="justify-content-center w-100 m-3">
+            <div class="d-flex m-3 justify-content-between">
+                {% block headline %}{% endblock %}
             </div>
             {{ include('flashes.html.twig') }}
             {% block main_content %}{% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'Log in'|trans }}!{% endblock %}
 
 {% block body %}
     <div class="form-signin m-auto d-flex justify-content-center align-items-center vh-100 bg-body-tertiary">
@@ -22,14 +22,19 @@
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <div class="checkbox mb-3">
+            <div class="checkbox">
                 <input type="checkbox" name="_remember_me" id="_remember_me">
                 <label for="_remember_me">{{ 'Remember me'|trans }}</label>
             </div>
 
-            <button class="btn btn-lg btn-primary" type="submit">
-                {{ 'Sign in'|trans }}
-            </button>
+            <div class="d-flex justify-content-center my-3">
+                <button class="btn btn-lg btn-primary" type="submit">
+                    {{ 'Sign in'|trans }}
+                </button>
+            </div>
+            <div class="text-center">
+                <p>{{ 'No account?'|trans }} <a href="{{ path('app_register') }}">{{ 'Register'|trans }}</a></p>
+            </div>
         </form>
     </div>
 {% endblock %}
