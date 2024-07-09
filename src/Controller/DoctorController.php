@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Business\Doctor\AppointmentAddition;
 use App\Business\Doctor\PatientAddition;
 use App\Business\User\UserUpdater;
-use App\Entity\Patient;
+use App\Entity\DoctorPatient;
+use App\Entity\User;
+use App\Form\AddAppointmentForm;
 use App\Form\AddPatientForm;
 use App\Form\UserForm;
-use App\Repository\PatientRepository;
+use App\Repository\DoctorPatientRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,9 +22,9 @@ class DoctorController extends AbstractController
 {
     #[Route('/patients', name: 'patients_list')]
     public function patientsList(
-        PatientRepository $repository,
-        PaginatorInterface $paginator,
-        Request $request
+        DoctorPatientRepository $repository,
+        PaginatorInterface      $paginator,
+        Request                 $request
     ) : Response {
         $doctor = $this->getUser();
         $query = $repository->findAllPatientsByDoctor($doctor);
@@ -40,7 +43,7 @@ class DoctorController extends AbstractController
 
     #[Route('/patient/{id}/info', name: 'patient_info')]
     public function patientInfo(
-        Patient $patient,
+        User $patient,
     ) : Response {
         return $this->render('doctor/patient_info.html.twig', [
             'patient' => $patient,
@@ -92,6 +95,28 @@ class DoctorController extends AbstractController
         return $this->render('doctor/patient_add.html.twig', [
             'form' => $form->createView(),
             'title' => 'Додавання пацієнта',
+        ]);
+    }
+
+    #[Route('/patient/{id}/appointment/add', name: 'add_appointment')]
+    public function addAppointment(
+        AppointmentAddition $appointmentAddition,
+        User $patient,
+        Request $request
+    ): Response {
+        $form = $this->createForm(AddAppointmentForm::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $appointmentAddition->add($form, $patient);
+
+            $this->addFlash('success', 'Ви успішно додали прийом');
+            return $this->redirectToRoute('doctor_patient_info', ['id' => $patient->getId()]);
+        }
+
+        return $this->render('doctor/appointment_add.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Створення прийому',
         ]);
     }
 }

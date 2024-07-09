@@ -1,12 +1,17 @@
 {% extends 'doctor/base_doctor.html.twig' %}
 
-{% block headline %}<h3>{{ patient.patient.fullName }}</h3>{% endblock %}
+{% block headline %}
+    <h3>{{ patient.fullName }}</h3>
+    <div class="d-flex justify-content-end">
+        <a href="{{ path('doctor_add_appointment', { 'id': patient.id }) }}" type="button" class="btn btn-primary">{{ 'Add appointment'|trans }}</a>
+    </div>
+{% endblock %}
 
 {% block main_content %}
     <div class="row">
-        {{ patient.patient.id }}
-        {{ patient.patient.fullName }}
-        {{ patient.patient.email }}
-        {{ patient.patient.code }}
+        {{ patient.id }}
+        {{ patient.fullName }}
+        {{ patient.email }}
+        {{ patient.code }}
     </div>
 {% endblock %}

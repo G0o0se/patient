@@ -12,7 +12,8 @@
                         {% if
                            app.request.get('_route') == 'doctor_patients_list' or
                            app.request.get('_route') == 'doctor_patient_info' or
-                           app.request.get('_route') == 'doctor_add_patient'
+                           app.request.get('_route') == 'doctor_add_patient' or
+                           app.request.get('_route') == 'doctor_add_appointment'
                         %}
                          active
                         {% endif %}"

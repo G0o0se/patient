@@ -71,18 +71,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $avatarPath = null;
 
     /**
-     * @var Collection<int, Patient>
+     * @var Collection<int, DoctorPatient>
      */
-    #[ORM\OneToMany(targetEntity: Patient::class, mappedBy: 'patient', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: DoctorPatient::class, mappedBy: 'patient', orphanRemoval: true)]
     private Collection $patients;
 
     /**
-     * @var Collection<int, Patient>
+     * @var Collection<int, DoctorPatient>
      */
-    #[ORM\OneToMany(targetEntity: Patient::class, mappedBy: 'doctor', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: DoctorPatient::class, mappedBy: 'doctor', orphanRemoval: true)]
     private Collection $doctors;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $code = null;
 
     public function __construct()
@@ -211,14 +211,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Patient>
+     * @return Collection<int, DoctorPatient>
      */
     public function getPatients(): Collection
     {
         return $this->patients;
     }
 
-    public function addPatient(Patient $patient): static
+    public function addPatient(DoctorPatient $patient): static
     {
         if (!$this->patients->contains($patient)) {
             $this->patients->add($patient);
@@ -228,7 +228,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removePatient(Patient $patient): static
+    public function removePatient(DoctorPatient $patient): static
     {
         if ($this->patients->removeElement($patient)) {
             // set the owning side to null (unless already changed)
@@ -241,14 +241,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Patient>
+     * @return Collection<int, DoctorPatient>
      */
     public function getDoctors(): Collection
     {
         return $this->doctors;
     }
 
-    public function addDoctor(Patient $patient): static
+    public function addDoctor(DoctorPatient $patient): static
     {
         if (!$this->patients->contains($patient)) {
             $this->patients->add($patient);
@@ -258,7 +258,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeDoctor(Patient $patient): static
+    public function removeDoctor(DoctorPatient $patient): static
     {
         if ($this->patients->removeElement($patient)) {
             // set the owning side to null (unless already changed)

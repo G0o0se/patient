@@ -1,10 +1,11 @@
 <?php
 namespace App\Business\Doctor;
 
-use App\Entity\Patient;
-use App\Repository\PatientRepository;
+use App\Entity\DoctorPatient;
+use App\Repository\DoctorPatientRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface as Translator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,21 +18,25 @@ class PatientAddition
 
     private Security $security;
 
-    private PatientRepository $patientRepository;
+    private DoctorPatientRepository $patientRepository;
+
+    private Translator $translator;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        UserRepository $userRepository,
-        Security $security,
-        PatientRepository $patientRepository
+        EntityManagerInterface  $entityManager,
+        UserRepository          $userRepository,
+        Security                $security,
+        DoctorPatientRepository $patientRepository,
+        Translator              $translator
     ) {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->security = $security;
         $this->patientRepository = $patientRepository;
+        $this->translator = $translator;
     }
 
-    public function add($form): Patient|Response
+    public function add($form): DoctorPatient|Response
     {
         $data = $form->getData();
 
@@ -42,11 +47,12 @@ class PatientAddition
         $patientIsAddedToDoctor = $this->patientRepository->getPatientByDoctor($doctor, $user);
 
         if(!is_null($patientIsAddedToDoctor)) {
-            return new Response('Пацієнт вже доданий до Вас', 400);
+            $message = $this->translator->trans('error.patient.alreadyAdded');
+            return new Response($message, 400);
         }
 
         if(!is_null($user)) {
-            $patient = new Patient();
+            $patient = new DoctorPatient();
             $patient->setPatient($user);
             $patient->setDoctor($doctor);
 
@@ -55,7 +61,8 @@ class PatientAddition
 
             return $patient;
         } else {
-            return new Response('Пацієнт не знайдений', 400);
+            $message = $this->translator->trans('error.patient.notFound');
+            return new Response($message, 400);
         }
     }
 }

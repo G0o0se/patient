@@ -24,6 +24,7 @@ Repeat:
 
 Patients: Пацієнти
 Add patient: Додати пацієнта
+Add appointment: Додати прийом
 Profile: Профіль
 Sign out: Вийти
 Information: Інформація
@@ -34,3 +35,11 @@ No account?: Немає профілю?
 Do you have an account?: Вже є профіль?
 Code: Код профілю
 Add: Додати
+Title: Заголовок
+Actions: Дії
+Conclusion: Висновок
+
+error:
+  patient:
+    notFound: Пацієнт не знайдений
+    alreadyAdded: Пацієнт вже доданий

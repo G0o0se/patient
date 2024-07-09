@@ -32,3 +32,6 @@ settings:
     light: Світлий
     dark: Темний
     auto: Автоматичний
+
+datagrid:
+  no_results: Немає результатів.
