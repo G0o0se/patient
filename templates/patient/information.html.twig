@@ -1,11 +1,7 @@
-{% extends 'doctor/base_doctor.html.twig' %}
+{% extends 'patient/base_patient.html.twig' %}
 
 {% block headline %}
-    <h3>{{ patient.fullName }}</h3>
-    <div class="d-flex justify-content-end">
-        <a href="{{ path('doctor_add_appointment', { 'id': patient.id }) }}"
-        type="button" class="btn btn-primary">{{ 'Add appointment'|trans }}</a>
-    </div>
+    <h3>{{ 'Your appointments'|trans }}</h3>
 {% endblock %}
 
 {% block main_content %}
@@ -21,7 +17,7 @@
                         aria-expanded="false"
                         aria-controls="{{ appointment.id }}">
                         {% for item in appointment.action %}
-                            {{ item.title }} - {{ appointment.createdAt|date('Y-m-d H:i') }}
+                            {{ item.title }} - {{ appointment.receptionist.doctor.fullName }} - {{ appointment.createdAt|date('Y-m-d H:i') }}
                         {% endfor %}
                     </button>
                 </h2>

@@ -3,7 +3,7 @@
 {% block title %}{{ 'Register'|trans }}!{% endblock %}
 
 {% block body %}
-    <div class="form-signin m-auto d-flex justify-content-center align-items-center vh-100 bg-body-tertiary">
+    <div class="m-auto d-flex justify-content-center align-items-center vh-100 bg-body-tertiary">
         {{ form_start(form) }}
 
         <div class="mb-2 {% if form.firstName.vars.errors|length %}form-error{% endif %}">

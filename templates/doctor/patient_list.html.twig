@@ -14,13 +14,11 @@
                 <div class="card">
                     <a href="{{ path('doctor_patient_info', {'id': patient.patient.id}) }}" class="card-body text-decoration-none">
                         <h5 class="card-title">{{ patient.patient.fullName }}</h5>
-                        <p class="card-title">{{ patient.patient.code }}</p>
+                        <p class="card-title">{{ patient.patient.email }} - {{ patient.patient.code }}</p>
                     </a>
                 </div>
             </div>
         {% endfor %}
     </div>
-    <div class="row">
-        {{ knp_pagination_render(pagination) }}
-    </div>
+    {{ knp_pagination_render(pagination) }}
 {% endblock %}

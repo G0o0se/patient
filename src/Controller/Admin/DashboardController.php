@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Action;
+use App\Entity\Appointment;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -30,7 +31,8 @@ class DashboardController extends AbstractDashboardController
     {
         return [
             MenuItem::linkToCrud('Користувачі', 'fa fa-home', User::class),
-            MenuItem::linkToCrud('Дії', 'fa fa-tasks', Action::class)
+            MenuItem::linkToCrud('Дії', 'fa fa-tasks', Action::class),
+            MenuItem::linkToCrud('Прийоми', 'fa fa-tasks', Appointment::class)
         ];
     }
 }

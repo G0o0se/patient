@@ -31,7 +31,7 @@ class DoctorPatient
 
     public function __toString(): string
     {
-        return $this->doctor->getFullName();
+        return 'Лікар - ' . $this->doctor->getFullName() .' | Пацієнт - ' . $this->patient->getFullName();
     }
 
     public function __construct()

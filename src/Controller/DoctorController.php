@@ -5,14 +5,15 @@ namespace App\Controller;
 use App\Business\Doctor\AppointmentAddition;
 use App\Business\Doctor\PatientAddition;
 use App\Business\User\UserUpdater;
-use App\Entity\DoctorPatient;
 use App\Entity\User;
 use App\Form\AddAppointmentForm;
 use App\Form\AddPatientForm;
 use App\Form\UserForm;
+use App\Repository\AppointmentRepository;
 use App\Repository\DoctorPatientRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -44,9 +45,19 @@ class DoctorController extends AbstractController
     #[Route('/patient/{id}/info', name: 'patient_info')]
     public function patientInfo(
         User $patient,
+        AppointmentRepository $appointmentRepository,
+        DoctorPatientRepository $doctorPatientRepository,
+        Security $security
     ) : Response {
+        $receptionist = $doctorPatientRepository->findOneBy([
+            'doctor' => $security->getUser()->getId(),
+            'patient' => $patient->getId()
+        ]);
+        $appointment = $appointmentRepository->findBy(['receptionist' => $receptionist->getId()]);
+
         return $this->render('doctor/patient_info.html.twig', [
             'patient' => $patient,
+            'appointments' => $appointment,
         ]);
     }
 
