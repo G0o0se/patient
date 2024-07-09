@@ -26,4 +26,15 @@ class PatientRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getPatientByDoctor($doctor, $patient)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.doctor = :doctor')
+            ->andWhere('p.patient = :patient')
+            ->setParameter('doctor', $doctor)
+            ->setParameter('patient', $patient)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

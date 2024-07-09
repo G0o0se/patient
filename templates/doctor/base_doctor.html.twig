@@ -9,7 +9,11 @@
                 <li class="nav-item">
                     <a href="{{ path('doctor_patients_list') }}"
                        class="nav-link
-                        {% if app.request.get('_route') == 'doctor_patients_list' %}
+                        {% if
+                           app.request.get('_route') == 'doctor_patients_list' or
+                           app.request.get('_route') == 'doctor_patient_info' or
+                           app.request.get('_route') == 'doctor_add_patient'
+                        %}
                          active
                         {% endif %}"
                        aria-current="page">

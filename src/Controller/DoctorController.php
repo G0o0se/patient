@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Business\Doctor\PatientAddition;
 use App\Business\User\UserUpdater;
 use App\Entity\Patient;
+use App\Form\AddPatientForm;
 use App\Form\UserForm;
 use App\Repository\PatientRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -67,9 +69,29 @@ class DoctorController extends AbstractController
         ]);
     }
 
-    #[Route('/add-patient', name: 'add_patient')]
-    public function addPatient()
-    {
-        return $this->render('doctor/index.html.twig');
+    #[Route('/patient/add', name: 'add_patient')]
+    public function addPatient(
+        PatientAddition $patientAddition,
+        Request $request
+    ): Response {
+        $form = $this->createForm(AddPatientForm::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $patient = $patientAddition->add($form);
+
+            if($patient instanceof Response) {
+                $this->addFlash('danger', $patient->getContent());
+                return $this->redirectToRoute('doctor_add_patient');
+            }
+
+            $this->addFlash('success', 'Ви успішно додали пацієнта.');
+            return $this->redirectToRoute('doctor_patients_list');
+        }
+
+        return $this->render('doctor/patient_add.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Додавання пацієнта',
+        ]);
     }
 }

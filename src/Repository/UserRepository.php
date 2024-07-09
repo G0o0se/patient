@@ -32,4 +32,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+
+    public function getPatient(string $code)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.code = :code')
+            ->andWhere('u.roles LIKE :roles')
+            ->setParameter('code', $code)
+            ->setParameter('roles', '%'.User::ROLE_PATIENT.'%')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
