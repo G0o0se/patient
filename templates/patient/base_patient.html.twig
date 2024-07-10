@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Patient'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex vh-100">
+        <div class="d-flex flex-column flex-shrink-0 h-100 p-3 bg-body-tertiary" style="width: 280px;">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{{ path('patient_information') }}"
+                       class="nav-link
+                        {% if app.request.get('_route') == 'patient_information' %}
+                         active
+                        {% endif %}"
+                       aria-current="page">
+                        {{ 'Information'|trans }}
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <strong>{{ app.user.fullName }}</strong>
+                </a>
+                <ul class="dropdown-menu text-small shadow">
+                    <li><a class="dropdown-item" href="{{ path('patient_profile') }}">{{ 'Profile'|trans }}</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ path('app_logout') }}">{{ 'Sign out'|trans }}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="justify-content-center w-100 m-3">
+            <div class="d-flex m-3 justify-content-between">
+                {% block headline %}{% endblock %}
+            </div>
+            {{ include('flashes.html.twig') }}
+            {% block main_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

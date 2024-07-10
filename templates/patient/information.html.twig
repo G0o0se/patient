@@ -1,0 +1,32 @@
+{% extends 'patient/base_patient.html.twig' %}
+
+{% block headline %}
+    <h3>{{ 'Your appointments'|trans }}</h3>
+{% endblock %}
+
+{% block main_content %}
+    <div class="accordion" id="accordionExample">
+        {% for appointment in appointments|reverse %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ appointment.id }}">
+                    <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#{{ appointment.id }}"
+                        aria-expanded="false"
+                        aria-controls="{{ appointment.id }}">
+                        {% for item in appointment.action %}
+                            {{ item.title }} - {{ appointment.receptionist.doctor.fullName }} - {{ appointment.createdAt|date('Y-m-d H:i') }}
+                        {% endfor %}
+                    </button>
+                </h2>
+                <div id="{{ appointment.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ appointment.id }}" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <p>{{ appointment.conclusion }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends 'doctor/base_doctor.html.twig' %}
+
+{% block headline %}<h3>{{ title }}</h3>{% endblock %}
+
+{% block main_content %}
+    <div class="mx-auto justify-content-center">
+        {{ form_start(form) }}
+
+        <div class="mb-2 {% if form.action.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.action) }}
+            {% if form.action.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.action) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.action, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+
+            <div class="my-3" style="display: none" id="ECGUpload">
+                <label for="fileInput" class="form-label">Завантажте файл з ЕКГ-апарату, для автоматичного анлізу</label>
+                <input class="form-control" type="file" id="fileInput">
+                <div class="btn btn-lg btn-primary mt-2" id="loadButton">Завантажити файл</div>
+            </div>
+
+            <input type="file" id="fileInput" style="display: none;">
+        </div>
+
+        <div class="mb-2 {% if form.conclusion.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.conclusion) }}
+            {% if form.conclusion.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.conclusion) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.conclusion, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mt-2">
+            <button class="btn btn-lg btn-primary justify-content-center" type="submit">
+                {{ 'Create appointment'|trans }}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelector('select[name="add_appointment_form[action][]"]').addEventListener('change', function() {
+                if (this.value === '2') {
+                    document.getElementById('ECGUpload').style.display = 'block';
+                } else {
+                    document.getElementById('ECGUpload').style.display = 'none';
+                }
+            });
+
+            document.getElementById('loadButton').addEventListener('click', function() {
+                var fileInput = document.getElementById('fileInput');
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var data = JSON.parse(e.target.result)[0];
+                    var heartRate = data.heartRate;
+                    var qrs = data.qrs;
+                    var interval = data.interval;
+                    var sign = data.sign;
+                    var createdAt = new Date(data.createdAt);
+                    var conclusion = "Відхилень не виявлено";
+                    createdAt = createdAt.toLocaleString('uk-UA', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+                    if (heartRate > 100) {
+                        if (qrs < 0.11) {
+                            if (interval === 0) {
+                                if (sign === 1) {
+                                    conclusion = "Синусова, передсердна та вузлова тахікардія.";
+                                }
+                            }
+
+                            if (interval === 1) {
+                                if (sign === 2) {
+                                    conclusion = "Мерехтіння передсердь";
+                                }
+                            }
+                        }
+
+                        if (qrs > 0.11) {
+                            if (interval === 0) {
+                                if (sign === 3) {
+                                    conclusion = "Шлуночкова тахікардія";
+                                }
+                            }
+
+                            if (interval === 1) {
+                                if (sign === 0) {
+                                    conclusion = "Шлуночкова тахікардія";
+                                }
+                            }
+                        }
+                    }
+
+                    if (heartRate < 60) {
+                        if (qrs < 0.11) {
+                            if (interval === 0) {
+                                if (sign === 1) {
+                                    conclusion = "Синусова брадикардія";
+                                }
+
+                                if (sign === 4) {
+                                    conclusion = "АВ - блокада";
+                                }
+
+                                if (sign === 3) {
+                                    conclusion = "АВ - блокада";
+                                }
+
+                                if (sign === 5) {
+                                    conclusion = "АВ - вузловий ритм";
+                                }
+                            }
+
+                            if (interval === 1) {
+                                if (sign === 6) {
+                                    conclusion = "Мерехтіння передсердь";
+                                }
+
+                                if (sign === 7) {
+                                    conclusion = "АВ - блокада типу Венкебака";
+                                }
+                            }
+                        }
+
+                        if (qrs > 0.11) {
+                            if (interval === 0) {
+                                if (sign === 3) {
+                                    conclusion = "Ідіоветрикулярний ритм";
+                                }
+                            }
+
+                            if (interval === 1) {
+                                if (sign === 8) {
+                                    conclusion = "Мерехтіння передсердь з аберантним проведенням";
+                                }
+                            }
+                        }
+                    }
+
+                    var intervalDescription;
+                    switch(interval) {
+                        case 0:
+                            intervalDescription = 'Регулярний';
+                            break;
+                        case 1:
+                            intervalDescription = 'Нерегулярний';
+                            break;
+                        default:
+                            intervalDescription = 'Невідомий';
+                    }
+
+                    var signDescription;
+                    switch(sign) {
+                        case 0:
+                            signDescription = 'Немає';
+                            break;
+                        case 1:
+                            signDescription = 'Співвідношення Р та QRS 1:1';
+                            break;
+                        case 2:
+                            signDescription = 'Численні невеликі, нерегулярні хвилі (зубці f)';
+                            break;
+                        case 3:
+                            signDescription = 'АБ-дисоціація';
+                            break;
+                        case 4:
+                            signDescription = 'Співвідношення Р та QRS 1:2';
+                            break;
+                        case 5:
+                            signDescription = 'Зубці Р інвертовані або невизначені';
+                            break;
+                        case 6:
+                            signDescription = 'Численні нерегулярні хвилі';
+                            break;
+                        case 7:
+                            signDescription = 'Зростаюче подовження інтервалу Р-R';
+                            break;
+                        case 8:
+                            signDescription = 'Численні нерегулярні хвилі (зубці Q)';
+                            break;
+                        default:
+                            signDescription = 'Невідомий';
+                    }
+
+                    var output =
+                        'Частота серцевих скорочень: ' + heartRate + ', Тривалість QRS: ' + qrs + ', Інтервал R-R: ' + intervalDescription + ', Супутні знаку: ' + signDescription + ', Дата та час аналізу: ' + createdAt + ', Висновок: ' + conclusion;
+                    document.querySelector('textarea[name="add_appointment_form[conclusion]"]').value = output;
+                };
+
+                reader.readAsText(file);
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Register'|trans }}!{% endblock %}
+
+{% block body %}
+    <div class="m-auto d-flex justify-content-center align-items-center vh-100 bg-body-tertiary">
+        {{ form_start(form) }}
+
+        <div class="mb-2 {% if form.firstName.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.firstName) }}
+            {% if form.firstName.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.firstName) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.firstName, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.lastName.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.lastName) }}
+            {% if form.lastName.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.lastName) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.lastName, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.email.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.email) }}
+            {% if form.email.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.email) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.email, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.password.first.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.password.first) }}
+            {% if form.password.first.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.password.first) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.password.first, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.password.second.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.password.second) }}
+            {% if form.password.second.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.password.second) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.password.second, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-2 {% if form.agreeTerms.vars.errors|length %}form-error{% endif %}">
+            {% if form.agreeTerms.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.agreeTerms) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.agreeTerms, {
+                'attr': {
+                    'class': 'form-check-input',
+                }
+            }) }}
+            {{ form_label(form.agreeTerms) }}
+        </div>
+
+        <div class="d-flex justify-content-center my-3">
+            <button class="btn btn-lg btn-primary" type="submit">
+                {{ 'Register'|trans }}
+            </button>
+        </div>
+
+        <div class="text-center">
+            <p>{{ 'Do you have an account?'|trans }} <a href="{{ path('app_login') }}">{{ 'Log in'|trans }}</a></p>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

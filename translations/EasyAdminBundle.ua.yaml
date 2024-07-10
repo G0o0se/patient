@@ -1,0 +1,37 @@
+paginator:
+  results: Результати
+
+page_title:
+  index: Список
+  edit: Редагування
+  new: Створення
+
+delete_modal:
+  title: Видалення запису
+  content: Після підтвердження запис буде видалений з БД. Ви впевнені?
+
+action:
+  new: Створити
+  search: Пошук
+  edit: Редагувати
+  delete: Видалити
+  save: Зберегти
+  save_and_continue: Зберегти і продовжити
+  create_and_add_another: Створити ще
+  create: Створити
+  cancel: Скасувати
+  choose_file: Вибрати файл
+
+user:
+  logged_in_as: Ви увійшли як
+  sign_out: Вийти
+
+settings:
+  appearance:
+    label: Зовнішній вигляд
+    light: Світлий
+    dark: Темний
+    auto: Автоматичний
+
+datagrid:
+  no_results: Немає результатів.

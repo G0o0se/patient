@@ -1,0 +1,48 @@
+Welcome: Ласкаво просимо!
+You are logged in as: Ви увійшли як
+Logout: Вийти
+Please sign in: Будь ласка, увійдіть
+Email: Електронна пошта
+Password: Пароль
+New password: Новий пароль
+Remember me: Запам'ятати мене
+Sign in: Увійти
+Invalid credentials.: Невірні дані для входу
+firstName: Ім'я
+lastName: Прізвище
+
+Roles: Ролі
+Admin: Адміністратор
+Patient: Пацієнт
+Doctor: Лікар
+Avatar: Аватар
+Save: Зберегти
+Repeat:
+  new:
+    password: Повторіть новий пароль
+  password: Повторіть пароль
+
+Patients: Пацієнти
+Add patient: Додати пацієнта
+Add appointment: Додати прийом
+Profile: Профіль
+Sign out: Вийти
+Information: Інформація
+Please fill in this field: Будь ласка, заповніть це поле
+Register: Реєстрація
+Log in: Вхід
+No account?: Немає профілю?
+Do you have an account?: Вже є профіль?
+Code: Код профілю
+Add: Додати
+Title: Заголовок
+Actions: Дії
+Conclusion: Висновок
+Your appointments: Ваші прийоми
+Receptionist: Прийом
+Create appointment: Створити прийом
+
+error:
+  patient:
+    notFound: Пацієнт не знайдений
+    alreadyAdded: Пацієнт вже доданий

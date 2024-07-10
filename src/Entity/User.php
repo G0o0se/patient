@@ -3,20 +3,35 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
+    public const ROLE_PATIENT = 'ROLE_PATIENT';
+
+    public const ROLE_DOCTOR = 'ROLE_DOCTOR';
+
+    public const IMAGE_FOLDER = '/uploads/avatars/';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotNull(
+        message: 'Будь ласка, заповніть це поле',
+    )]
     private ?string $email = null;
 
     /**
@@ -29,7 +44,57 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\Length([
+        'min' => 8,
+        'minMessage' => 'Ваш пароль повинен містити щонайменше {{ limit }} символів',
+    ])]
+    #[Assert\Regex(
+        pattern: '/[!@#$%^&*()\-_=+{};:,<.>]/',
+        message: 'Ваш пароль повинен містити принаймні один спеціальний символ',
+        match: true,
+    )]
     private ?string $password = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotNull(
+        message: 'Будь ласка, заповніть це поле',
+    )]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\NotNull(
+        message: 'Будь ласка, заповніть це поле',
+    )]
+    private ?string $lastName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatarPath = null;
+
+    /**
+     * @var Collection<int, DoctorPatient>
+     */
+    #[ORM\OneToMany(targetEntity: DoctorPatient::class, mappedBy: 'patient', orphanRemoval: true)]
+    private Collection $patients;
+
+    /**
+     * @var Collection<int, DoctorPatient>
+     */
+    #[ORM\OneToMany(targetEntity: DoctorPatient::class, mappedBy: 'doctor', orphanRemoval: true)]
+    private Collection $doctors;
+
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $code = null;
+
+    public function __construct()
+    {
+        $this->patients = new ArrayCollection();
+        $this->doctors = new ArrayCollection();
+    }
+
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
 
     public function getId(): ?int
     {
@@ -41,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
 
@@ -102,5 +167,118 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): static
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getAvatarPath(): ?string
+    {
+        return $this->avatarPath;
+    }
+
+    public function setAvatarPath(?string $avatarPath): static
+    {
+        $this->avatarPath = $avatarPath;
+
+        return $this;
+    }
+
+    public function getFullAvatarPath(): ?string
+    {
+        return $this->avatarPath ? self::IMAGE_FOLDER . $this->avatarPath : null;
+    }
+
+    /**
+     * @return Collection<int, DoctorPatient>
+     */
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function addPatient(DoctorPatient $patient): static
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients->add($patient);
+            $patient->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatient(DoctorPatient $patient): static
+    {
+        if ($this->patients->removeElement($patient)) {
+            // set the owning side to null (unless already changed)
+            if ($patient->getPatient() === $this) {
+                $patient->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DoctorPatient>
+     */
+    public function getDoctors(): Collection
+    {
+        return $this->doctors;
+    }
+
+    public function addDoctor(DoctorPatient $patient): static
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients->add($patient);
+            $patient->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDoctor(DoctorPatient $patient): static
+    {
+        if ($this->patients->removeElement($patient)) {
+            // set the owning side to null (unless already changed)
+            if ($patient->getDoctor() === $this) {
+                $patient->setDoctor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
+
+        return $this;
     }
 }

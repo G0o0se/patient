@@ -1,0 +1,31 @@
+{% extends 'doctor/base_doctor.html.twig' %}
+
+{% block headline %}<h3>{{ title }}</h3>{% endblock %}
+
+{% block main_content %}
+    <div class="mx-auto d-flex justify-content-center">
+        {{ form_start(form) }}
+
+        <div class="mb-2 {% if form.code.vars.errors|length %}form-error{% endif %}">
+            {{ form_label(form.code) }}
+            {% if form.code.vars.errors|length %}
+                <div class="alert alert-danger alert-custom" role="alert">
+                    {{ form_errors(form.code) }}
+                </div>
+            {% endif %}
+            {{ form_widget(form.code, {
+                'attr': {
+                    'class': 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div class="mt-2">
+            <button class="btn btn-lg btn-primary justify-content-center" type="submit">
+                {{ 'Add'|trans }}
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
